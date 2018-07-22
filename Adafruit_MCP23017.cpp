@@ -11,13 +11,21 @@
  BSD license, all text above must be included in any redistribution
  ****************************************************/
 
+#ifdef __AVR_ATtiny85__
+  #include <TinyWireM.h>
+  #define Wire TinyWireM
+#else
+  #include <Wire.h>
+#endif
+
+
 #ifdef __AVR
   #include <avr/pgmspace.h>
 #elif defined(ESP8266)
   #include <pgmspace.h>
 #endif
 #include "Adafruit_MCP23017.h"
-
+#include "wisperlite.h"
 #if ARDUINO >= 100
 #include "Arduino.h"
 #else
@@ -108,7 +116,7 @@ void Adafruit_MCP23017::begin(uint8_t addr) {
 	}
 	i2caddr = addr;
 
-	Wire.begin();
+	Wire.begin(YWL_I2C_SDA, YWL_I2C_SCK);
 
 	// set defaults!
 	// all inputs on port A and B
