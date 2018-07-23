@@ -24,6 +24,7 @@
 
 class Adafruit_MCP23017 {
 public:
+	void begin(uint8_t addr,uint8_t sda,uint8_t sdk);
   void begin(uint8_t addr);
   void begin(void);
 

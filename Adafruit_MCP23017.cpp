@@ -25,7 +25,6 @@
   #include <pgmspace.h>
 #endif
 #include "Adafruit_MCP23017.h"
-#include "wisperlite.h"
 #if ARDUINO >= 100
 #include "Arduino.h"
 #else
@@ -116,14 +115,26 @@ void Adafruit_MCP23017::begin(uint8_t addr) {
 	}
 	i2caddr = addr;
 
-	Wire.begin(YWL_I2C_SDA, YWL_I2C_SCK);
+	Wire.begin(0);
 
 	// set defaults!
 	// all inputs on port A and B
 	writeRegister(MCP23017_IODIRA,0xff);
 	writeRegister(MCP23017_IODIRB,0xff);
 }
+void Adafruit_MCP23017::begin(uint8_t addr,uint8_t sda,uint8_t sck) {
+	if (addr > 7) {
+		addr = 7;
+	}
+	i2caddr = addr;
 
+	Wire.begin(sda,sck);
+
+	// set defaults!
+	// all inputs on port A and B
+	writeRegister(MCP23017_IODIRA, 0xff);
+	writeRegister(MCP23017_IODIRB, 0xff);
+}
 /**
  * Initializes the default MCP23017, with 000 for the configurable part of the address
  */
